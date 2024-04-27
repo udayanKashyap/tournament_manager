@@ -1,3 +1,5 @@
+// THIS PAGE CONTAINS A FORM ACCESSED BY HOSTEL USER TO ENROLL/REGISTER SOME STUDENTS OF THE HOSTEL FOR A PARTICULAR TOURNAMENT
+
 import React, { useState, useEffect } from 'react';
 import '../styles/registerForTournament.css'; // Importing the CSS file
 

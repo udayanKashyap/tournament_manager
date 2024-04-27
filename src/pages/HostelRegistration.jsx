@@ -1,3 +1,5 @@
+// THIS PAGE REGISTERS THE HOSTEL USER AND PASSWORD
+
 import React, { useState } from 'react';
 import "../styles/addHostel.css"
 

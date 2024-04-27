@@ -1,8 +1,11 @@
+// THIS PAGE CONTAINS A FORM THAT CAN BE ACCESSED BY ADMIN USERS TO CREATE A NEW TOURNAMENT
+
 import React, { useState } from 'react';
 import '../styles//createTournament.css'; // Importing the CSS file
 
 function TournamentCreationPage() {
   const [tournamentId, setTournamentId] = useState('');
+  const [tournamentName, setTournamentName] = useState('');
   const [hostelsParticipating, setHostelsParticipating] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -47,6 +50,17 @@ function TournamentCreationPage() {
             required
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="tournamentName">Tournament Name:</label>
+          <input
+            type="text"
+            id="tournamentName"
+            value={tournamentName}
+            onChange={(e) => setTournamentName(e.target.value)}
+            required
+          />
+        </div>
+
         <div className="form-group">
           <label htmlFor="hostelsParticipating">Hostels Participating:</label>
           <select
