@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './createTournament.css'; // Importing the CSS file
+import '../styles//createTournament.css'; // Importing the CSS file
 
 function TournamentCreationPage() {
   const [tournamentId, setTournamentId] = useState('');

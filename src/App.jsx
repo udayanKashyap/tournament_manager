@@ -3,9 +3,9 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-import AddHostelPage from './pages/HostelRegistration'
+import AddHostelPage from './pages/addHostel'
 import AddStudentsPage from './pages/addStudents'
-import TournamentCreationPage from './components/Tournament/createTournament'
+import TournamentCreationPage from './pages/createTournament'
 import ParticipantRegistrationPage from './pages/registerForTournament'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
