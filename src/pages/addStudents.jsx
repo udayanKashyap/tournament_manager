@@ -40,7 +40,8 @@ function AddStudentsPage() {
     console.log('Students:', students);
     console.log(hostel_id)
     // Resetting the form fields after submission
-    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/student`, { students, hostel_id })
+    const token = localStorage.getItem("token");
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/student`, { students, hostel_id }, { headers: { Authorization: `Bearer ${token}` } })
     console.log(res.data)
     setStudents([{ name: '', rollNo: '', address: '', contactNo: '', age: '', gender: '', }]);
   };

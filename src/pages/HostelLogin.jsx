@@ -21,7 +21,7 @@ function HostelLoginPage() {
         password: password,
       })
       localStorage.setItem('token', res.data.token)
-      addHostel(res.data.data.id, res.data.data.name)
+      addHostel(res.data.data.name, res.data.data.id)
       router("/hostel/students/add")
     } catch (error) {
       window.alert(error.message)
