@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import "../styles/addStudent.css"
-
+import { useHostelStore } from '../store/store';
+import axios from 'axios'
 function AddStudentsPage() {
+  const hostel_id = useHostelStore(state => state.id)
   const [students, setStudents] = useState([
     {
       name: '',
@@ -32,20 +34,23 @@ function AddStudentsPage() {
     setStudents(newStudents);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (event) => {
+
     // Here you can add code to submit the student data
     console.log('Students:', students);
+    console.log(hostel_id)
     // Resetting the form fields after submission
-    setStudents([{ name: '', rollNo: '', address: '', contactNo: '', age: '', gender: '' }]);
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/student`, { students, hostel_id })
+    console.log(res.data)
+    setStudents([{ name: '', rollNo: '', address: '', contactNo: '', age: '', gender: '', }]);
   };
 
   return (
     <div className="add-students-container">
       <h1>Add Students to Hostel</h1>
-      <form onSubmit={handleSubmit} className="add-students-form">
-        {students.map((student, index) => (
-          <div key={index} className="student">
+      {students.map((student, index) => (
+        <form className="add-students-form" key={index}>
+          <div className="student">
             <div className="form-group">
               <label htmlFor={`name-${index}`}>Name:</label>
               <input
@@ -116,18 +121,21 @@ function AddStudentsPage() {
                 <option value="other">Other</option>
               </select>
             </div>
-            {index > 0 && (
+            {students.length > 0 && (
               <button type="button" onClick={() => handleRemoveStudent(index)} className="remove-button">
                 Remove Student
               </button>
             )}
           </div>
-        ))}
+        </form>
+      ))}
+      <div className='button-container'>
+
         <button type="button" onClick={handleAddStudent} className="add-button">
           Add Student
         </button>
-        <button type="submit" className="submit-button">Submit</button>
-      </form>
+        <button type="submit" className="submit-button" onClick={handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 }

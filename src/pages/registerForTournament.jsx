@@ -10,20 +10,20 @@ function ParticipantRegistrationPage() {
   const [selectedParticipants, setSelectedParticipants] = useState([]);
 
   // Simulating data for hostel students
-  useEffect(() => {
-    // Replace this with actual API call to fetch hostel ID from the tournament ID
-    const fetchHostelId = async () => {
-      try {
-        const response = await fetch(`your-api-endpoint/tournament/${tournamentId}/hostel`);
-        const data = await response.json();
-        setHostelId(data.hostelId); // Assuming the response contains hostelId
-      } catch (error) {
-        console.error('Error fetching hostel ID:', error);
-      }
-    };
+  // useEffect(() => {
+  //   // Replace this with actual API call to fetch hostel ID from the tournament ID
+  //   const fetchHostelId = async () => {
+  //     try {
+  //       const response = await fetch(`your-api-endpoint/tournament/${tournamentId}/hostel`);
+  //       const data = await response.json();
+  //       setHostelId(data.hostelId); // Assuming the response contains hostelId
+  //     } catch (error) {
+  //       console.error('Error fetching hostel ID:', error);
+  //     }
+  //   };
 
-    fetchHostelId();
-  }, [tournamentId]);
+  //   fetchHostelId();
+  // }, [tournamentId]);
 
   // Fetch students list based on hostel ID
   useEffect(() => {

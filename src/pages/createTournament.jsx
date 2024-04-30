@@ -1,38 +1,58 @@
 // THIS PAGE CONTAINS A FORM THAT CAN BE ACCESSED BY ADMIN USERS TO CREATE A NEW TOURNAMENT
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles//createTournament.css'; // Importing the CSS file
+import axios from 'axios';
 
 function TournamentCreationPage() {
-  const [tournamentId, setTournamentId] = useState('');
   const [tournamentName, setTournamentName] = useState('');
-  const [hostelsParticipating, setHostelsParticipating] = useState([]);
+  const [hostels, setHostels] = useState([]);
+  const [selectedHostels, setSelectedHostels] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [status, setStatus] = useState('');
   const [numPlayersPerTeam, setNumPlayersPerTeam] = useState('');
+
+  useEffect(() => {
+    const fetchHostels = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/hostel`);
+        console.log(response.data)
+        setHostels(response.data);
+      } catch (error) {
+        console.error('Error fetching hostels:', error);
+      }
+    };
+
+    fetchHostels();
+  }, []);
 
   const handleHostelSelection = (event) => {
     const selectedHostels = Array.from(event.target.selectedOptions, (option) => option.value);
-    setHostelsParticipating(selectedHostels);
+    setSelectedHostels(selectedHostels);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if(new Date(endDate) < new Date(startDate)){
-        // setErrorMessage('End date cannot be before start date');
-        return;
+    if (new Date(endDate) < new Date(startDate)) {
+      window.alert("End date cannot be before start date")
+      return;
     }
-    // Here you can add code to submit the tournament data
-    console.log('Tournament ID:', tournamentId);
-    console.log('Hostels Participating:', hostelsParticipating);
-    console.log('Start Date:', startDate);
-    console.log('End Date: ', endDate)
-    console.log('Number of Players per Team:', numPlayersPerTeam);
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/tournament`, {
+      name: tournamentName,
+      start_date: startDate,
+      end_date: endDate,
+      status: status,
+      num_players: numPlayersPerTeam,
+      hostels_participating: selectedHostels,
+    })
+    console.log(res.data)
     // Resetting the form fields after submission
-    setTournamentId('');
-    setHostelsParticipating([]);
+    setTournamentName('');
+    setSelectedHostels([]);
     setStartDate('');
     setEndDate('');
+    setStatus('');
     setNumPlayersPerTeam('');
   };
 
@@ -40,16 +60,6 @@ function TournamentCreationPage() {
     <div className="tournament-creation-container">
       <h1>Create Tournament</h1>
       <form onSubmit={handleSubmit} className="tournament-creation-form">
-        <div className="form-group">
-          <label htmlFor="tournamentId">Tournament ID:</label>
-          <input
-            type="text"
-            id="tournamentId"
-            value={tournamentId}
-            onChange={(e) => setTournamentId(e.target.value)}
-            required
-          />
-        </div>
         <div className="form-group">
           <label htmlFor="tournamentName">Tournament Name:</label>
           <input
@@ -66,14 +76,13 @@ function TournamentCreationPage() {
           <select
             multiple
             id="hostelsParticipating"
-            value={hostelsParticipating}
+            value={selectedHostels}
             onChange={handleHostelSelection}
             required
           >
-            <option value="hostel1">Hostel 1</option>
-            <option value="hostel2">Hostel 2</option>
-            <option value="hostel3">Hostel 3</option>
-            {/* Add more hostels as needed */}
+            {hostels?.map(hostel => (
+              <option key={hostel.id} value={hostel.id}>{hostel.name}</option>
+            ))}
           </select>
         </div>
         <div className="form-group">
@@ -103,6 +112,16 @@ function TournamentCreationPage() {
             id="numPlayersPerTeam"
             value={numPlayersPerTeam}
             onChange={(e) => setNumPlayersPerTeam(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="tournament_status">Status:</label>
+          <input
+            type="text"
+            id="tournament_status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
             required
           />
         </div>

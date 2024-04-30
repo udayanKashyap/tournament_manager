@@ -2,27 +2,34 @@
 
 import React, { useState } from 'react';
 import "../styles/addHostel.css"
+import axios from 'axios';
 
 function HostelRegistration() {
   const [hostelName, setHostelName] = useState('');
   const [numBoarders, setNumBoarders] = useState(0);
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Here you can add code to submit the hostel registration data
     console.log('Hostel Name:', hostelName);
     console.log('Number of Boarders:', numBoarders);
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/hostel`, {
+      name: hostelName,
+      password: password,
+    });
+    console.log(res.data);
+
     // Resetting the form fields after submission
     setHostelName('');
     setNumBoarders(0);
   };
 
   return (
-    <div>
+    <div className='registration-container'>
       <h1>Inter-Hostel Tournament Registration</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className='registration-form'>
+        <div className='form-group'>
           <label htmlFor="hostelName">Hostel Name:</label>
           <input
             type="text"
@@ -32,27 +39,17 @@ function HostelRegistration() {
             required
           />
         </div>
-        <div>
-          <label htmlFor="numBoarders">Number of Boarders:</label>
-          <input
-            type="number"
-            id="numBoarders"
-            value={numBoarders}
-            onChange={(e) => setNumBoarders(parseInt(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="hostekPasswotd">Password:</label>
+        <div className='form-group'>
+          <label htmlFor="hostelPassword">Password:</label>
           <input
             type="password"
-            id="password"
+            id="hostelPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Register Hostel</button>
+        <button type="submit" className='submit-button'>Register Hostel</button>
       </form>
     </div>
   );

@@ -1,18 +1,28 @@
 .add-students-container {
-    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     background-color: #2b2b2b;
+    color: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
   .add-students-form {
     display: flex;
-    flex-direction: column;
+    gap: 1rem;
+    /* flex-direction: column; */
   }
   
+  .student{
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
   .form-group {
+    flex: 1;
+    min-width: 100px;
     margin-bottom: 15px;
   }
   
@@ -42,6 +52,7 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
+    flex: 1;
   }
   
   .add-button:hover,
@@ -50,3 +61,14 @@
     background-color: #0056b3;
   }
   
+  .button-container{
+    margin: auto;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    width: 90%;
+    max-width: 800px;
+  }
+  .button-container>button{
+    width: 100%;
+  }

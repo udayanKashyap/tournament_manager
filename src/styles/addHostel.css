@@ -2,7 +2,7 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #4a2f2f;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
@@ -19,9 +19,9 @@
   label {
     font-weight: bold;
   }
-  
-  input[type="text"],
-  input[type="number"] {
+
+
+  input  {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
