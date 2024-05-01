@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import "../styles/addStudent.css"
 import { useHostelStore } from '../store/store';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+
 function AddStudentsPage() {
   const hostel_id = useHostelStore(state => state.id)
+  const router = useNavigate()
   const [students, setStudents] = useState([
     {
       name: '',
@@ -39,11 +42,18 @@ function AddStudentsPage() {
     // Here you can add code to submit the student data
     console.log('Students:', students);
     console.log(hostel_id)
+    students.forEach(element => {
+      if (element.name === '') {
+        window.alert("Roll number invalid.");
+        return;
+      }
+    });
     // Resetting the form fields after submission
     const token = localStorage.getItem("token");
     const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/student`, { students, hostel_id }, { headers: { Authorization: `Bearer ${token}` } })
     console.log(res.data)
     setStudents([{ name: '', rollNo: '', address: '', contactNo: '', age: '', gender: '', }]);
+    router("/hostel/students")
   };
 
   return (

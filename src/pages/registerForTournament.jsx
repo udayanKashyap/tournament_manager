@@ -35,7 +35,10 @@ function ParticipantRegistrationPage() {
       const fetchTournamentList = async () => {
         try {
           const token = localStorage.getItem("token");
-          const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/tournament/${hostelId}`, { headers: { Authorization: `Bearer ${token}` } })
+          const res = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/tournament/${hostelId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
           setTournamentList(res.data);
         } catch (error) {
           console.error('Error fetching tournaments list: ', error);

@@ -22,7 +22,7 @@ function HostelLoginPage() {
       })
       localStorage.setItem('token', res.data.token)
       addHostel(res.data.data.name, res.data.data.id)
-      router("/hostel/students/add")
+      router("/hostel/students")
     } catch (error) {
       window.alert(error.message)
     }

@@ -1,34 +1,50 @@
 // THIS PAGE SHOWS ALL THE STUDENTS OF THE LOGGED IN HOSTERL USER IN A TABLE
 // THIS ALSO PROVIDES THE FUNCTIONALITY TO DELETE THEM
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/viewStudents.css"
+import { useHostelStore } from '../store/store';
+import axios from 'axios';
 
 function ViewStudentsPage() {
-  const [students, setStudents] = useState([
-    {
-      name: 'John Doe',
-      rollNo: '101',
-      address: '123 Main Street',
-      contactNo: '123-456-7890',
-      age: '20',
-      gender: 'male'
-    },
-    {
-      name: 'Jane Smith',
-      rollNo: '102',
-      address: '456 Elm Street',
-      contactNo: '987-654-3210',
-      age: '21',
-      gender: 'female'
-    }
-  ]);
+  const hostelId = useHostelStore(state => state.id)
+  const [students, setStudents] = useState([]);
 
-  const handleDeleteStudent = (index) => {
+  const fetchStudentsList = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/student`);
+      let currentHostelStudents = []
+      res.data.forEach(student => {
+        if (student.hostel_id === hostelId) {
+          currentHostelStudents.push(student);
+        }
+      });
+      setStudents(currentHostelStudents);
+      console.log(currentHostelStudents);
+    } catch (error) {
+      console.error('Error fetching students list: ', error);
+    }
+  };
+  useEffect(() => {
+    if (hostelId) {
+      fetchStudentsList();
+    }
+  }, [hostelId])
+
+  const handleDeleteStudent = async (student) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
-      const updatedStudents = [...students];
-      updatedStudents.splice(index, 1);
-      setStudents(updatedStudents);
+      console.log(student);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASE_URL}/student/${student.roll_no}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        console.log(res.data);
+        fetchStudentsList();
+      } catch (error) {
+        console.error('Error deleting Student: ', error);
+      }
     }
   };
 
@@ -53,13 +69,13 @@ function ViewStudentsPage() {
             {students.map((student, index) => (
               <tr key={index}>
                 <td>{student.name}</td>
-                <td>{student.rollNo}</td>
+                <td>{student.roll_no}</td>
                 <td>{student.address}</td>
-                <td>{student.contactNo}</td>
+                <td>{student.contact_number}</td>
                 <td>{student.age}</td>
                 <td>{student.gender}</td>
                 <td>
-                  <button onClick={() => handleDeleteStudent(index)}>Delete</button>
+                  <button onClick={() => handleDeleteStudent(student)}>Delete</button>
                 </td>
               </tr>
             ))}
