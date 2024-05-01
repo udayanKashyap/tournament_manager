@@ -12,10 +12,14 @@ import HostelLoginPage from './pages/HostelLogin'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TournamentViewPage from './pages/viewTournaments'
-import { useHostelStore } from './store/store'
+import { useHostelStore, useAdminStore } from './store/store'
+import AdminRegistration from './pages/adminRegistration'
+import AdminLoginPage from './pages/adminLogin'
+import Navbar from './components/navbar'
 
 function App() {
   const addHostel = useHostelStore(state => state.addHostel)
+  const addAdmin = useAdminStore(state => state.addAdmin)
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (!token) {
@@ -25,7 +29,12 @@ function App() {
       try {
         const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/verify`, { token })
         console.log("verified token!!!", res.data)
-        addHostel(res.data.name, res.data.id)
+        if (res.data.userType === "admin") {
+          addAdmin(res.data.userType, res.data.username)
+        }
+        if (res.data.userType === "hostelAdmin") {
+          addHostel(res.data.userType, res.data.name, res.data.id)
+        }
       } catch (error) {
         console.log(error)
       }
@@ -35,6 +44,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/hostel/register" element={<AddHostelPage />} />
         <Route path="/hostel/students/add" element={<AddStudentsPage />} />
@@ -44,6 +54,9 @@ function App() {
         <Route path="/hostel/tournament/register" element={<ParticipantRegistrationPage />} />
         <Route path="/tournament/create" element={<TournamentCreationPage />} />
         <Route path="/tournament/view" element={<TournamentViewPage />} />
+
+        <Route path="/admin/register" element={<AdminRegistration />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
       </Routes>
     </BrowserRouter>
   );

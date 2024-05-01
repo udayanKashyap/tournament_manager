@@ -1,43 +1,41 @@
 /* tournamentView.css */
 
 .tournament-view-container {
-    margin: 20px;
-  }
-  
-  .tournament-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .tournament-table th,
-  .tournament-table td {
-    padding: 10px;
-    border: 1px solid #2b2929;
-    text-align: left;
-  }
-  
-  .tournament-table th {
-    background-color: #f2f2f2;
-  }
-  
-  .tournament-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .tournament-table tbody tr:hover {
-    background-color: #ddd;
-  }
-  
-  .tournament-table td button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .tournament-table td button:hover {
-    background-color: #0056b3;
-  }
-  
-  
+  margin: 20px;
+}
+
+.tournament-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tournament-table th,
+.tournament-table td {
+  padding: 10px;
+  border: 1px solid #2b2929;
+  text-align: left;
+}
+
+.tournament-table th {
+  background-color: #4f3131;
+}
+
+.tournament-table tbody tr:nth-child(even) {
+  background-color: #081e3f;
+}
+
+.tournament-table tbody tr:hover {
+  background-color: #ddd;
+}
+
+.tournament-table td button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.tournament-table td button:hover {
+  background-color: #0056b3;
+}
