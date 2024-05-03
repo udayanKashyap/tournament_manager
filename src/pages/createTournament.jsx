@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import '../styles//createTournament.css'; // Importing the CSS file
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 function TournamentCreationPage() {
   const [tournamentName, setTournamentName] = useState('');
@@ -38,14 +38,26 @@ function TournamentCreationPage() {
       window.alert("End date cannot be before start date")
       return;
     }
-    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/tournament`, {
-      name: tournamentName,
-      start_date: startDate,
-      end_date: endDate,
-      status: status,
-      num_players: numPlayersPerTeam,
-      hostels_participating: selectedHostels,
-    })
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/tournament`,
+        {
+          name: tournamentName,
+          start_date: startDate,
+          end_date: endDate,
+          status: status,
+          num_players: numPlayersPerTeam,
+          hostels_participating: selectedHostels,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        window.alert(error.response.data.message)
+      }
+
+    }
     console.log(res.data)
     // Resetting the form fields after submission
     setTournamentName('');

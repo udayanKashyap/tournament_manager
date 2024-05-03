@@ -36,7 +36,7 @@ function ParticipantRegistrationPage() {
         try {
           const token = localStorage.getItem("token");
           const res = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/tournament/${hostelId}`,
+            `${import.meta.env.VITE_BASE_URL}/tournament/hostel/${hostelId}`,
             { headers: { Authorization: `Bearer ${token}` } }
           )
           setTournamentList(res.data);

@@ -5,43 +5,71 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../styles/viewTournaments.css'; // Import CSS file
 import Navbar from '../components/navbar';
+import axios from 'axios';
+
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+  const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+  // console.log(formattedDate);
+  return formattedDate;
+}
 
 function TournamentViewPage() {
-  const [tournaments, setTournaments] = useState([
-    {
-      id: '1',
-      name: 'Cricket',
-      startDate: '123 Main Street',
-      endDate: '123-456-7890',
-      status: 'Ongoing',
-      hostels: ['cmh', 'nmh']
-    },
-    {
-      id: '2',
-      name: 'Badminton',
-      startDate: '123 Main Street',
-      endDate: '123-456-7890',
-      status: 'Ongoing',
-      hostels: ['pmh', 'kmh']
-    },
-
-  ]);
+  const [tournaments, setTournaments] = useState([{
+    id: "",
+    name: "",
+    start_date: "",
+    end_date: "",
+    status: "",
+    num_players: 0,
+    hostels: [],
+  }]);
 
   // Simulating data for tournaments
   useEffect(() => {
     // Replace this with actual API call to fetch tournaments data
     const fetchTournaments = async () => {
+      let tournamentArray, participantTable, hostelArray;
       try {
-        // const response = await fetch('your-api-endpoint/tournaments');
-        // const data = await response.json();
-        // setTournaments(data.tournaments);
+        let res = await axios.get(`${import.meta.env.VITE_BASE_URL}/tournament`)
+        tournamentArray = res.data;
+        res = await axios.get(`${import.meta.env.VITE_BASE_URL}/tournament/participants`)
+        participantTable = res.data;
+        res = await axios.get(`${import.meta.env.VITE_BASE_URL}/hostel`)
+        hostelArray = res.data;
+
+        // console.log(tournamentArray, participantTable, hostelArray)
+
+        const modifiedArray = tournamentArray.map(tournament => {
+          let hostels = [];
+          participantTable.forEach(entry => {
+            if (entry.tournament_id === tournament.id) {
+              let hostelName;
+              hostelArray.forEach(hostel => {
+                if (hostel.id === entry.hostel_id) {
+                  hostelName = hostel.name;
+                }
+              })
+              hostels.push(hostelName);
+            }
+          });
+          return {
+            ...tournament,
+            hostels: hostels
+          }
+        })
+
+        setTournaments(modifiedArray);
       } catch (error) {
         console.error('Error fetching tournaments:', error);
       }
     };
 
     fetchTournaments();
+
   }, []);
+
+  console.log(tournaments);
 
   return (
     <div>
@@ -55,6 +83,7 @@ function TournamentViewPage() {
               <th>Start Date</th>
               <th>End Date</th>
               <th>Status</th>
+              <th>Number of Players</th>
               <th>Participating Hostels</th>
               <th>View</th>
             </tr>
@@ -64,16 +93,19 @@ function TournamentViewPage() {
               <tr key={tournament.id}>
                 <td>{tournament.id}</td>
                 <td>{tournament.name}</td>
-                <td>{tournament.startDate}</td>
-                <td>{tournament.endDate}</td>
+                <td>{formatDate(tournament.start_date)}</td>
+                <td>{formatDate(tournament.end_date)}</td>
                 <td>{tournament.status}</td>
+                <td>{tournament.num_players}</td>
                 <td>
-                  {tournament.hostels.map((hostel, index) => (
-                    <span key={hostel.id}>
-                      {hostel.name}
-                      {index !== tournament.hostels.length - 1 && ', '}
-                    </span>
-                  ))}
+                  {
+                    tournament.hostels.map((hostel, index) => (
+                      <span key={index}>
+                        {hostel}
+                        {index !== tournament.hostels.length - 1 && ', '}
+                      </span>
+                    ))
+                  }
                 </td>
                 <td>
                   <Link to={`/tournament/${tournament.id}`}>
