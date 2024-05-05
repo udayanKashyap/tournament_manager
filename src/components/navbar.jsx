@@ -10,9 +10,13 @@ function Navbar() {
       <div className="navbar-container">
         <Link to="/tournament/view" className="navbar-brand">Tournament App</Link>
         <div className="navbar-links">
-          <Link to="/tournament/view" className="navbar-link">View</Link>
-          <Link to="/hostel/login" className="navbar-link">Hostel</Link>
-          <Link to="/admin/login" className="navbar-link">Admin</Link>
+          <Link to="/hostel/login" className="navbar-link">HostelLogin</Link>
+          <Link to="/admin/login" className="navbar-link">AdminLogin</Link>
+          <Link to="/hostel/register" className="navbar-link">HostelRegister</Link>
+          <Link to="/hostel/students/add" className="navbar-link">AddStudents</Link>
+          <Link to="/hostel/students" className="navbar-link">ViewStudents</Link>
+          <Link to="/hostel/tournament/register" className="navbar-link">RegisterStudents</Link>
+          <Link to="/tournament/create" className="navbar-link">NewTournament</Link>
           <button className="logout-button" onClick={() => {
             localStorage.removeItem("token");
             router("/tournament/view")

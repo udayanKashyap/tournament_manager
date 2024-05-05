@@ -16,6 +16,8 @@ import { useHostelStore, useAdminStore } from './store/store'
 import AdminRegistration from './pages/adminRegistration'
 import AdminLoginPage from './pages/adminLogin'
 import Navbar from './components/navbar'
+import SingleElimination from './pages/viewMatches'
+import EditMatches from './pages/editMatches'
 
 function App() {
   const addHostel = useHostelStore(state => state.addHostel)
@@ -57,6 +59,9 @@ function App() {
 
         <Route path="/admin/register" element={<AdminRegistration />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/:tournament_id/matches" element={<EditMatches />} />
+
+        <Route path="/:tournament_id/matches" element={<SingleElimination />} />
       </Routes>
     </BrowserRouter>
   );

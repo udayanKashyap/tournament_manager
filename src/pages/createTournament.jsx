@@ -58,7 +58,6 @@ function TournamentCreationPage() {
       }
 
     }
-    console.log(res.data)
     // Resetting the form fields after submission
     setTournamentName('');
     setSelectedHostels([]);
