@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAdminStore } from "../store/store";
 
-const HostelProtectedRoute = ({ children }) => {
+const AdminProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const username = useAdminStore((state) => state.username);
   const loading = useAdminStore((state) => state.loading);
@@ -17,4 +17,4 @@ const HostelProtectedRoute = ({ children }) => {
   return <>{children}</>;
 };
 
-export default HostelProtectedRoute;
+export default AdminProtectedRoute;
